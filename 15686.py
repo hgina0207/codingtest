@@ -6,6 +6,8 @@ graph=[list(map(int,input().split())) for _ in range(n)]
 home=[]
 chicken=[]
 
+
+
 for i in range(n):
     for j in range(n):
         if graph[i][j]==1:
