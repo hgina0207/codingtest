@@ -2,21 +2,15 @@ import sys
 input=sys.stdin.readline
 N=int(input())
 graph=[list(map(int,input().split())) for _ in range(N)]
+dp=[[[0]*N for _ in range(N)] for _ in range(3)]
+dp[0][0][1]=1
+for i in range(N):
+    for j in range(1,N):
+        if j+1<N and graph[i][j+1]==0:
+            dp[0][i][j+1]+=dp[0][i][j]+dp[2][i][j]
+        if i+1<N and graph[i+1][j]==0:
+            dp[1][i+1][j]+=dp[1][i][j]+dp[2][i][j]
+        if j+1<N and i+1<N and graph[i+1][j+1]==0 and graph[i+1][j]==0 and graph[i][j+1]==0:
+            dp[2][i+1][j+1]+=dp[0][i][j]+dp[1][i][j]+dp[2][i][j]
 
-cnt=0
-def dfs(x,y,status):
-    global cnt
-    if x==N-1 and y==N-1:
-        cnt+=1
-        return
-    if status==1 or status==3:
-        if x+1<N and graph[y][x+1]==0:
-            dfs(x+1,y,1)
-    if status==2 or status==3:
-        if y+1<N and graph[y+1][x]==0:
-            dfs(x,y+1,2)
-    if x+1<N and y+1<N:
-        if graph[y][x+1]==0 and graph[y+1][x]==0 and graph[y+1][x+1]==0:
-            dfs(x+1,y+1,3)
-dfs(1,0,1)
-print(cnt)
+print(dp[0][N-1][N-1]+dp[1][N-1][N-1]+dp[2][N-1][N-1])
